@@ -15,6 +15,11 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+# O projeto React/Vite está dentro desta pasta no repositório.
+defaults:
+  run:
+    working-directory: ./gerador-relatorios-odeen-GITHUB-PRONTO
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./gerador-relatorios-odeen-GITHUB-PRONTO/dist
 
   deploy:
     environment:
