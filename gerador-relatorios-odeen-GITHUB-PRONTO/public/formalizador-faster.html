@@ -6,7 +6,7 @@
     <title>Gerador de Formalizações — ODEEN</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-    <script type="text/javascript" src="https://me.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=xEqjg7pKaI_8xaAG8R0bunrGqOVB9bt1pWNFSPWPjyC_itBF35VYKtXyvQFycd8wEqyGmcr5X1U6boj3hGfx-i-AmNVMN_Ph-dDahFo_niKXGk4KCaa7togSpU3ZCmKC-deWz1h32Hg_cqQYTm6nb57hWlwVQ3xmLGZ4XdDXY8_S7gsjRVWDr_vjPjCrfaduwhvaBkxf_eNe3MBWXwbl0rPx7w4OQB0Q8Ic7TjheKQrgHTaN_PK_Yhg9t0s9fHQbsIEKAwl_-Ckt6qJHip8sEkIXEU0q_SDyvJc16oQSp31iUSTqgaC44eUSfrGa5owmLMEfxhlCQbnt4dvENEPWZt8KhZhOPNJwnnzLxNItfhg" charset="UTF-8"></script><style>
+    <script type="text/javascript" src="https://me.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=4sPY22BVgWaf6ubyuii76FPczO6aqqS3KOzwKNiAfXxqcWzsbUTgmE3maIbc-9m36_lFMTXPzxeXwF-4fPp_M4Nf25uKAHeNi33h8EXMv4sf_549WFpkH2hTdnzOlSqOFobyVi3XvmkXasa7Uc7ZGKSrVL2k2EC8chqXxD9Ij-kY4MzcekCxaO0pdEVJ8DE4J-QSlmn5WZcjBHxrHIpbwO8KUS2igsMdeUBGZtgcnmrQxa2rgIWEndkQGZ_WJh8-4lFvH-rPkrOMmKJ3ul6qU0wfptwwh3Kvp-_kSmY3TDEy8X5y5UxsWH43cJNMNRT1LSFqK7OMihyifE4-0-Ju34onQiDP61CY4xCXMHZPIRY" charset="UTF-8"></script><style>
         :root {
             --primary: #111312;
             --primary-light: #222925;
@@ -1329,6 +1329,7 @@
                         <option value="GUINCHO_LM">FORMALIZAÇÃO GUINCHO LM</option>
                         <option value="PRONTA_RESPOSTA_SEM_SUCESSO">PADRÃO PRONTA RESPOSTA (AVERIGUAÇÃO) SEM SUCESSO NO VISUAL</option>
                         <option value="PRONTA_RESPOSTA_RASTREADOR">PADRÃO PRONTA RESPOSTA (RASTREADOR LOCALIZADO) — SOMENTE O RASTREADOR LOCALIZADO</option>
+                        <option value="INICIO_RECUPERACAO_HDI">PADRÃO INÍCIO RECUPERAÇÃO HDI</option>
                         <option value="AGENCIA">FORMALIZAÇÃO ENTREGUE EM AGÊNCIA</option>
                     </select>
                 </div>
@@ -2576,6 +2577,20 @@
                 </div>
             </div>`,
 
+        INICIO_RECUPERACAO_HDI: `
+            <div class="subsection">
+                <h3>Dados do início da recuperação HDI</h3>
+                <div class="grid">
+                    <div class="field"><label for="pDataHDI">Data <span class="required">*</span></label><input id="pDataHDI" type="date"></div>
+                    <div class="field"><label for="pHorarioHDI">Horário <span class="required">*</span></label><input id="pHorarioHDI" type="time"></div>
+                    <div class="field"><label for="pPlaca">Placa <span class="required">*</span></label><input id="pPlaca" type="text" placeholder="Informe a placa"></div>
+                    <div class="field"><label for="pTipoOcorrenciaHDI">Tipo de ocorrência <span class="required">*</span></label><select id="pTipoOcorrenciaHDI"><option value="">Selecione...</option><option value="ROUBO/FURTO">ROUBO/FURTO</option><option value="ROUBO">ROUBO</option><option value="FURTO">FURTO</option></select></div>
+                    <div class="field full"><label for="pLocalHDI">Endereço <span class="required">*</span></label><textarea id="pLocalHDI" rows="3" placeholder="Informe o endereço da localização"></textarea></div>
+                    <div class="field"><label for="pApoliceHDI">Apólice <span class="required">*</span></label><input id="pApoliceHDI" type="text" placeholder="Informe a apólice"></div>
+                    <div class="field"><label for="pSinistroHDI">Sinistro (opcional)</label><input id="pSinistroHDI" type="text" placeholder="Informe o sinistro, se disponível"></div>
+                </div>
+            </div>`,
+
         AGENCIA: `
             <div class="subsection">
                 <h3>Dados da entrega em agência</h3>
@@ -2741,6 +2756,12 @@
             operacao: pval("pOperacao"),
             local: pval("pLocal"),
             mensagemSS: pval("pMensagemSS"),
+            dataHDI: pval("pDataHDI"),
+            horarioHDI: pval("pHorarioHDI"),
+            tipoOcorrenciaHDI: pval("pTipoOcorrenciaHDI"),
+            localHDI: pval("pLocalHDI"),
+            apoliceHDI: pval("pApoliceHDI"),
+            sinistroHDI: pval("pSinistroHDI"),
 
             matriz: pval("pMatriz"),
             outroMatriz: pval("pOutroMatriz"),
@@ -2795,7 +2816,11 @@
         if (d.tipo === "PERDA") return e;
 
         req(d.placa, "Placa");
-        req(d.local, "Localização");
+        if (d.tipo === "INICIO_RECUPERACAO_HDI") {
+            req(d.localHDI, "Endereço");
+        } else {
+            req(d.local, "Localização");
+        }
 
         if (d.tipo === "SS") {
             req(d.operacao, "Operação");
@@ -2883,6 +2908,13 @@
             }
         }
 
+        if (d.tipo === "INICIO_RECUPERACAO_HDI") {
+            req(d.dataHDI, "Data");
+            req(d.horarioHDI, "Horário");
+            req(d.tipoOcorrenciaHDI, "Tipo de ocorrência");
+            req(d.apoliceHDI, "Apólice");
+        }
+
         if (d.tipo === "AGENCIA") {
             req(d.operacao, "Operação");
             req(d.rastreador, "Rastreador");
@@ -2955,6 +2987,15 @@
             }
 
             return t + "\n\nDesta forma, finalizamos o caso com o presente status.";
+        }
+
+        if (d.tipo === "INICIO_RECUPERACAO_HDI") {
+            const dataFormatada = d.dataHDI
+                ? d.dataHDI.split("-").reverse().join("/")
+                : "";
+            const sinistro = d.sinistroHDI ? `\n\nSinistro: ${d.sinistroHDI}` : "";
+
+            return `Equipe ODEEN, no dia ${dataFormatada} às ${d.horarioHDI}, prosseguiu com a LOCALIZAÇÃO do veículo de placa ${d.placa}, possuindo registro de ${d.tipoOcorrenciaHDI} e sem auxílio do rastreador, localizado nas imediações da ${d.localHDI}.\n\nInformamos que a RECUPERAÇÃO segue em andamento, com as devidas tratativas junto às autoridades competentes.\n\nApólice: ${d.apoliceHDI}${sinistro}`;
         }
 
         if (d.tipo === "AGENCIA") {
