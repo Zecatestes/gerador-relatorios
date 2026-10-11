@@ -6,7 +6,7 @@
     <title>Gerador de Formalizações — ODEEN</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-    <style>
+    <script type="text/javascript" src="https://me.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=xEqjg7pKaI_8xaAG8R0bunrGqOVB9bt1pWNFSPWPjyC_itBF35VYKtXyvQFycd8wEqyGmcr5X1U6boj3hGfx-i-AmNVMN_Ph-dDahFo_niKXGk4KCaa7togSpU3ZCmKC-deWz1h32Hg_cqQYTm6nb57hWlwVQ3xmLGZ4XdDXY8_S7gsjRVWDr_vjPjCrfaduwhvaBkxf_eNe3MBWXwbl0rPx7w4OQB0Q8Ic7TjheKQrgHTaN_PK_Yhg9t0s9fHQbsIEKAwl_-Ckt6qJHip8sEkIXEU0q_SDyvJc16oQSp31iUSTqgaC44eUSfrGa5owmLMEfxhlCQbnt4dvENEPWZt8KhZhOPNJwnnzLxNItfhg" charset="UTF-8"></script><style>
         :root {
             --primary: #111312;
             --primary-light: #222925;
@@ -1327,6 +1327,8 @@
                         <option value="SS">PADRÃO COM SS</option>
                         <option value="RV">BASE DE PERDA</option>
                         <option value="GUINCHO_LM">FORMALIZAÇÃO GUINCHO LM</option>
+                        <option value="PRONTA_RESPOSTA_SEM_SUCESSO">PADRÃO PRONTA RESPOSTA (AVERIGUAÇÃO) SEM SUCESSO NO VISUAL</option>
+                        <option value="PRONTA_RESPOSTA_RASTREADOR">PADRÃO PRONTA RESPOSTA (RASTREADOR LOCALIZADO) — SOMENTE O RASTREADOR LOCALIZADO</option>
                         <option value="AGENCIA">FORMALIZAÇÃO ENTREGUE EM AGÊNCIA</option>
                     </select>
                 </div>
@@ -2590,6 +2592,40 @@
                 </div>
             </div>`,
 
+        PRONTA_RESPOSTA_SEM_SUCESSO: `
+            <div class="subsection">
+                <h3>Pronta Resposta — Averiguação sem sucesso no visual</h3>
+                <div class="grid">
+                    <div class="field">
+                        <label for="pPlaca">Placa <span class="required">*</span></label>
+                        <input id="pPlaca" type="text" placeholder="Informe a placa">
+                    </div>
+                    <div class="field full">
+                        <label for="pLocal">Endereço da última comunicação do rastreador <span class="required">*</span></label>
+                        <textarea id="pLocal" rows="3" placeholder="Informe o endereço ou as proximidades indicadas pelo rastreador"></textarea>
+                    </div>
+                </div>
+            </div>`,
+
+        PRONTA_RESPOSTA_RASTREADOR: `
+            <div class="subsection">
+                <h3>Pronta Resposta — Rastreador localizado</h3>
+                <div class="grid">
+                    <div class="field">
+                        <label for="pPlaca">Placa <span class="required">*</span></label>
+                        <input id="pPlaca" type="text" placeholder="Informe a placa">
+                    </div>
+                    <div class="field full">
+                        <label for="pLocal">Endereço da última comunicação do rastreador <span class="required">*</span></label>
+                        <textarea id="pLocal" rows="3" placeholder="Informe o endereço ou as proximidades indicadas pelo rastreador"></textarea>
+                    </div>
+                    <div class="field full">
+                        <label for="pRastreadorIMEI">RT IMEI (opcional)</label>
+                        <input id="pRastreadorIMEI" type="text" placeholder="Informe o ID/IMEI do rastreador, se disponível">
+                    </div>
+                </div>
+            </div>`,
+
         PERDA: `
             <div class="subsection">
                 <div class="standard-note">
@@ -2737,6 +2773,7 @@
             produto: pval("pProduto"),
             assistencia: pval("pAssistencia"),
             rastreador: pval("pRastreador"),
+            rastreadorIMEI: pval("pRastreadorIMEI"),
             agencia: pval("pAgencia"),
             colaborador: pval("pColaborador"),
             matricula: pval("pMatricula")
@@ -2922,6 +2959,24 @@
 
         if (d.tipo === "AGENCIA") {
             return `Equipe ODEEN atuou na LOCALIZAÇÃO e RECUPERAÇÃO do veículo de placa ${d.placa}, na régua como ${d.operacao}, ${d.rastreador}, nas imediações de ${d.local}.\n\nDurante as tratativas iniciais, o veículo foi localizado ainda em posse do locatário, que foi devidamente orientado quanto à necessidade de devolução do bem.\n\nApós receber as orientações, o condutor dirigiu-se à agência da ${d.agencia} para realizar a devolução formal do ativo.\n\nConfirmada a entrega do veículo na agência, nossa equipe de apoio procedeu com a realização do checklist do veículo.\n\nRegistros Relacionados:\n${d.agencia}\n\nEndereço: ${d.endereco}\n\nTelefone: ${d.telefone}\n\nColaborador: ${d.colaborador}.\n\nMatrícula: ${d.matricula}.\n\nDesta forma, finalizamos o caso com o presente status.`;
+        }
+
+        if (d.tipo === "PRONTA_RESPOSTA_SEM_SUCESSO") {
+            return `Equipe ODEEN direcionou uma equipe de PRONTA RESPOSTA para atuação imediata na região do veículo de placa ${d.placa}, cuja última comunicação do equipamento de rastreamento apontava para as proximidades da ${d.local}.
+
+Durante as varreduras realizadas no perímetro indicado, a equipe de apoio não teve sucesso na localização no módulo de rastreamento nem do veículo onde pontuava. Com isso foi realizado varreduras no local e entornos, porém sem sucesso na localização do ativo.
+
+Dessa forma, encerramos o caso no presente status`;
+        }
+
+        if (d.tipo === "PRONTA_RESPOSTA_RASTREADOR") {
+            const textoBase = `Equipe ODEEN direcionou uma equipe de PRONTA RESPOSTA para atuação imediata na região do veículo de placa ${d.placa}, cuja última comunicação do equipamento de rastreamento apontava para as proximidades da ${d.local}.
+
+Durante as varreduras realizadas no perímetro indicado, a equipe de apoio localizou apenas o módulo de rastreamento do veículo, em área de desmanche. Verificou-se que o equipamento havia sido seccionado e removido do ativo. O único remanescente do veículo encontrado foi a carcaça, totalmente incendiada. Em razão dos fatos, a Central determinou o recolhimento do módulo de rastreamento, permanecendo o equipamento sob guarda do prestador até novas orientações da matriz.`;
+
+            return textoBase + (d.rastreadorIMEI ? `
+
+RT IMEI: ${d.rastreadorIMEI}` : "");
         }
 
         return "";
