@@ -8,5 +8,5 @@ Aplicação desenvolvida para facilitar a criação de relatórios de recuperaç
 2. Preencha as informações solicitadas sobre a ocorrência e o veículo.
 3. Anexe imagens, caso necessário.
 4. Confira os dados e gere o relatório em PDF.
-5. Utilize a opção **Formalizador Faster** para acessar a ferramenta de formalização.
+5. Utilize a opção **Formalizador Faster** para acessar a ferramenta de formalizações padrões.
 
