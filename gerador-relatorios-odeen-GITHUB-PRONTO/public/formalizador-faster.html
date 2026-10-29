@@ -692,6 +692,7 @@
                         <option value="ROUBO">ROUBO</option>
                         <option value="FURTO">FURTO</option>
                         <option value="ROUBO/FURTO">ROUBO/FURTO</option>
+                        <option value="APROPRIAÇÃO INDÉBITA">APROPRIAÇÃO INDÉBITA</option>
                         <option value="SEM QUEIXA/REGISTRO">SEM QUEIXA/REGISTRO</option>
                     </select>
                 </div>
@@ -1327,6 +1328,9 @@
                         <option value="SS">FECHAMENTO PADRÃO COM SS</option>
                         <option value="RV">BASE DE PERDA</option>
                         <option value="GUINCHO_LM">FORMALIZAÇÃO RECOLHIDO COM GUINCHO (LM,MOTTU,ETC)</option>
+                        <option value="FECHAMENTO_BASE_LOCALIZA">PADRÃO FECHAMENTO — VEÍCULO ENCONTRADO EM GUINCHO/OFICINA CREDENCIADA LOCALIZA</option>
+                        <option value="AVERIGUACAO_OK">AVERIGUAÇÃO — EM SEGURANÇA OK</option>
+                        <option value="VEICULO_ATIVIDADE_CRIMINOSA">VEÍCULO UTILIZADO EM ATIVIDADE CRIMINOSA</option>
                         <option value="PRONTA_RESPOSTA_SEM_SUCESSO">PADRÃO PRONTA RESPOSTA (AVERIGUAÇÃO) SEM SUCESSO NO VISUAL</option>
                         <option value="PRONTA_RESPOSTA_RASTREADOR">PADRÃO PRONTA RESPOSTA (RASTREADOR LOCALIZADO) — SOMENTE O RASTREADOR LOCALIZADO</option>
                         <option value="INICIO_RECUPERACAO_HDI">PADRÃO INÍCIO RECUPERAÇÃO HDI</option>
@@ -2577,6 +2581,55 @@
                 </div>
             </div>`,
 
+        FECHAMENTO_BASE_LOCALIZA: `
+            <div class="subsection">
+                <h3>Veículo encontrado em guincho/oficina credenciada Localiza</h3>
+                <div class="grid">
+                    <div class="field"><label>Placa <span class="required">*</span></label><input id="pPlaca" type="text"></div>
+                    <div class="field"><label>Tipo de estabelecimento <span class="required">*</span></label><select id="pTipoBase"><option value="">Selecione...</option><option value="GUINCHO">Guincho credenciado</option><option value="OFICINA">Oficina credenciada</option></select></div>
+                    <div class="field full"><label>Endereço do rastreio <span class="required">*</span></label><input id="pLocal" type="text" placeholder="Endereço indicado pelo rastreamento"></div>
+                    <div class="field full"><label>Endereço da base do guincho/oficina <span class="required">*</span></label><input id="pEnderecoBase" type="text"></div>
+                    <div class="field full"><label>Relato / conclusões <span class="required">*</span></label><textarea id="pRelatoBase" rows="5" placeholder="Descreva o que foi constatado no local e a confirmação com o responsável/matriz."></textarea></div>
+                    <div class="field full"><label>Dados da SS <span class="required">*</span></label><textarea id="pDadosSSBase" rows="5" placeholder="Empresa, endereço, CNPJ, telefone e número da SS."></textarea></div>
+                </div>
+            </div>`,
+
+        AVERIGUACAO_OK: `
+            <div class="subsection">
+                <h3>Averiguação — veículo localizado em segurança</h3>
+                <div class="grid">
+                    <div class="field"><label>Placa <span class="required">*</span></label><input id="pPlaca" type="text"></div>
+                    <div class="field full"><label>Endereço da localização <span class="required">*</span></label><input id="pLocal" type="text"></div>
+                    <div class="field"><label>Nome do condutor/possuidor <span class="required">*</span></label><input id="pCondutorOk" type="text"></div>
+                    <div class="field"><label>CPF ou CNH (opcional)</label><input id="pDocumentoOk" type="text" placeholder="CPF ou CNH, se disponível"></div>
+                    <div class="field full"><label>Conclusão da liberação / relato <span class="required">*</span></label><textarea id="pConclusaoOk" rows="5" placeholder="Explique por que foi constatado que o veículo estava em segurança e registre a orientação da matriz."></textarea></div>
+                </div>
+            </div>`,
+
+        VEICULO_ATIVIDADE_CRIMINOSA: `
+            <div class="subsection">
+                <h3>Veículo utilizado em atividade criminosa</h3>
+                <div class="grid">
+                    <div class="field"><label>Placa <span class="required">*</span></label><input id="pPlaca" type="text"></div>
+                    <div class="field"><label>Utilizou rastreador? <span class="required">*</span></label><select id="pRastreadorCrime"><option value="">Selecione...</option><option value="SIM">COM AUXÍLIO DE RASTREADOR</option><option value="NAO">SEM AUXÍLIO DO RASTREADOR</option></select></div>
+                    <div class="field full"><label>Endereço de localização <span class="required">*</span></label><input id="pLocal" type="text"></div>
+                    <div class="field full"><label>Relato da atividade criminosa <span class="required">*</span></label><textarea id="pRelatoCrime" rows="6" placeholder="Descreva a atividade criminosa e as providências adotadas."></textarea></div>
+                    <div class="field full"><label>Delegacia/unidade de apresentação e apreensão <span class="required">*</span></label><input id="pDelegaciaCrime" type="text"></div>
+                    <div class="field full"><label>Endereço da delegacia/unidade <span class="required">*</span></label><input id="pEnderecoCrime" type="text"></div>
+                    <div class="field"><label>Telefone da delegacia/unidade <span class="required">*</span></label><input id="pTelefoneCrime" type="text"></div>
+                    <div class="field"><label>B.O. de apreensão <span class="required">*</span></label><input id="pBOCrime" type="text"></div>
+                    <div class="field"><label>Foi encaminhado também para pátio? <span class="required">*</span></label><select id="pCrimePatio"><option value="">Selecione...</option><option value="NAO">NÃO</option><option value="SIM">SIM</option></select></div>
+                </div>
+                <div id="pCrimePatioFields" class="subsection conditional">
+                    <h3>Dados do pátio de apreensão</h3>
+                    <div class="grid">
+                        <div class="field"><label>Nome do pátio <span class="required">*</span></label><input id="pPatioCrime"></div>
+                        <div class="field"><label>Endereço do pátio <span class="required">*</span></label><input id="pEnderecoPatioCrime"></div>
+                        <div class="field"><label>Telefone do pátio <span class="required">*</span></label><input id="pTelefonePatioCrime"></div>
+                    </div>
+                </div>
+            </div>`,
+
         INICIO_RECUPERACAO_HDI: `
             <div class="subsection">
                 <h3>Dados do início da recuperação HDI</h3>
@@ -2584,7 +2637,7 @@
                     <div class="field"><label for="pDataHDI">Data <span class="required">*</span></label><input id="pDataHDI" type="date"></div>
                     <div class="field"><label for="pHorarioHDI">Horário <span class="required">*</span></label><input id="pHorarioHDI" type="time"></div>
                     <div class="field"><label for="pPlaca">Placa <span class="required">*</span></label><input id="pPlaca" type="text" placeholder="Informe a placa"></div>
-                    <div class="field"><label for="pTipoOcorrenciaHDI">Tipo de ocorrência <span class="required">*</span></label><select id="pTipoOcorrenciaHDI"><option value="">Selecione...</option><option value="ROUBO/FURTO">ROUBO/FURTO</option><option value="ROUBO">ROUBO</option><option value="FURTO">FURTO</option></select></div>
+                    <div class="field"><label for="pTipoOcorrenciaHDI">Tipo de ocorrência <span class="required">*</span></label><select id="pTipoOcorrenciaHDI"><option value="">Selecione...</option><option value="ROUBO/FURTO">ROUBO/FURTO</option><option value="ROUBO">ROUBO</option><option value="FURTO">FURTO</option><option value="APROPRIAÇÃO INDÉBITA">APROPRIAÇÃO INDÉBITA</option></select></div>
                     <div class="field full"><label for="pLocalHDI">Endereço <span class="required">*</span></label><textarea id="pLocalHDI" rows="3" placeholder="Informe o endereço da localização"></textarea></div>
                     <div class="field"><label for="pApoliceHDI">Apólice <span class="required">*</span></label><input id="pApoliceHDI" type="text" placeholder="Informe a apólice"></div>
                     <div class="field"><label for="pSinistroHDI">Sinistro (opcional)</label><input id="pSinistroHDI" type="text" placeholder="Informe o sinistro, se disponível"></div>
@@ -2729,6 +2782,10 @@
             );
         }
 
+        if (padraoTipo.value === "VEICULO_ATIVIDADE_CRIMINOSA") {
+            padraoShow($("pCrimePatioFields"), pval("pCrimePatio") === "SIM");
+        }
+
         if (padraoTipo.value === "GUINCHO_LM") {
             const m = pval("pMatriz");
 
@@ -2795,6 +2852,23 @@
             assistencia: pval("pAssistencia"),
             rastreador: pval("pRastreador"),
             rastreadorIMEI: pval("pRastreadorIMEI"),
+            tipoBase: pval("pTipoBase"),
+            enderecoBase: pval("pEnderecoBase"),
+            relatoBase: pval("pRelatoBase"),
+            dadosSSBase: pval("pDadosSSBase"),
+            condutorOk: pval("pCondutorOk"),
+            documentoOk: pval("pDocumentoOk"),
+            conclusaoOk: pval("pConclusaoOk"),
+            rastreadorCrime: pval("pRastreadorCrime"),
+            relatoCrime: pval("pRelatoCrime"),
+            delegaciaCrime: pval("pDelegaciaCrime"),
+            enderecoCrime: pval("pEnderecoCrime"),
+            telefoneCrime: pval("pTelefoneCrime"),
+            boCrime: pval("pBOCrime"),
+            crimePatio: pval("pCrimePatio"),
+            patioCrime: pval("pPatioCrime"),
+            enderecoPatioCrime: pval("pEnderecoPatioCrime"),
+            telefonePatioCrime: pval("pTelefonePatioCrime"),
             agencia: pval("pAgencia"),
             colaborador: pval("pColaborador"),
             matricula: pval("pMatricula")
@@ -2896,6 +2970,33 @@
             }
         }
 
+        if (d.tipo === "FECHAMENTO_BASE_LOCALIZA") {
+            req(d.tipoBase, "Tipo de estabelecimento");
+            req(d.enderecoBase, "Endereço da base do guincho/oficina");
+            req(d.relatoBase, "Relato / conclusões");
+            req(d.dadosSSBase, "Dados da SS");
+        }
+
+        if (d.tipo === "AVERIGUACAO_OK") {
+            req(d.condutorOk, "Nome do condutor/possuidor");
+            req(d.conclusaoOk, "Conclusão da liberação / relato");
+        }
+
+        if (d.tipo === "VEICULO_ATIVIDADE_CRIMINOSA") {
+            req(d.rastreadorCrime, "Utilizou rastreador?");
+            req(d.relatoCrime, "Relato da atividade criminosa");
+            req(d.delegaciaCrime, "Delegacia/unidade de apresentação e apreensão");
+            req(d.enderecoCrime, "Endereço da delegacia/unidade");
+            req(d.telefoneCrime, "Telefone da delegacia/unidade");
+            req(d.boCrime, "B.O. de apreensão");
+            req(d.crimePatio, "Foi encaminhado também para pátio?");
+            if (d.crimePatio === "SIM") {
+                req(d.patioCrime, "Nome do pátio");
+                req(d.enderecoPatioCrime, "Endereço do pátio");
+                req(d.telefonePatioCrime, "Telefone do pátio");
+            }
+        }
+
         if (d.tipo === "GUINCHO_LM") {
             req(d.matriz, "Matriz");
 
@@ -2972,6 +3073,27 @@
             }
 
             return t + "\n\nDesta forma encerramos o caso com o presente status.";
+        }
+
+        if (d.tipo === "FECHAMENTO_BASE_LOCALIZA") {
+            const descricaoEstabelecimento = d.tipoBase === "OFICINA"
+                ? "em uma oficina credenciada pela Localiza, situada no endereço"
+                : "em um guincho credenciado pela Localiza, situado no endereço";
+            return `Equipe ODEEN atuou na LOCALIZAÇÃO do veículo de placa ${d.placa}, com o auxílio de rastreamento, nas imediações de ${d.local}.\n\nDurante as diligências, o ativo foi localizado ${descricaoEstabelecimento}: ${d.enderecoBase}.\n\n${d.relatoBase}\n\nDados da SS:\n\n${d.dadosSSBase}\n\nDeste modo, finalizamos o caso com o presente status.`;
+        }
+
+        if (d.tipo === "AVERIGUACAO_OK") {
+            const identificacao = d.documentoOk ? `, possuidor(a) do CPF/CNH: ${d.documentoOk}` : "";
+            return `Equipe ODEEN direcionou uma equipe de PRONTA RESPOSTA para atuação imediata na região do veículo de placa ${d.placa}, cuja comunicação do equipamento de rastreamento apontava para as proximidades de ${d.local}.\n\nDurante as varreduras realizadas no perímetro indicado, a equipe de apoio localizou o veículo em segurança. Após a localização, foi sinalizado à Matriz que o ativo estava em segurança na posse do condutor: ${d.condutorOk}${identificacao}.\n\n${d.conclusaoOk}\n\nDessa forma, encerramos o caso no presente status.`;
+        }
+
+        if (d.tipo === "VEICULO_ATIVIDADE_CRIMINOSA") {
+            const rastreador = d.rastreadorCrime === "SIM" ? "com auxílio do rastreador" : "sem auxílio do rastreador";
+            let texto = `Equipe ODEEN prosseguiu com a LOCALIZAÇÃO e RECUPERAÇÃO do veículo de placa ${d.placa}, localizado ${rastreador} nas imediações: ${d.local}.\n\n${d.relatoCrime}\n\nAssim, foram realizados os trâmites legais, encaminhando o veículo para ${d.delegaciaCrime}, onde foi apresentado e o ativo segue apreendido até o presente momento, sob o B.O. de Apreensão nº ${d.boCrime}.\n\nDelegacia/Unidade de Apreensão:\n${d.delegaciaCrime}\nEndereço: ${d.enderecoCrime}\nTelefone: ${d.telefoneCrime}\nB.O.: ${d.boCrime}.`;
+            if (d.crimePatio === "SIM") {
+                texto += `\n\nPosteriormente, o veículo foi encaminhado para o pátio de apreensão:\n${d.patioCrime}\nEndereço: ${d.enderecoPatioCrime}\nTelefone: ${d.telefonePatioCrime}.`;
+            }
+            return texto + "\n\nDesta forma encerramos o caso com o presente status.";
         }
 
         if (d.tipo === "GUINCHO_LM") {
